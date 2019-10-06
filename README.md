@@ -1,6 +1,6 @@
 # Eclipse Paho MQTT C++ Client Library
 
-[![Build Status](https://travis-ci.org/eclipse/paho.mqtt.cpp.svg?branch=master)](https://travis-ci.org/eclipse/paho.mqtt.cpp)
+[![Build Status](https://travis-ci.com/aarkhang/paho.mqtt.cpp.svg?branch=master)](https://travis-ci.com/aarkhang/paho.mqtt.cpp)
 
 This repository contains the source code for the [Eclipse Paho](http://eclipse.org/paho) MQTT C++ client library on memory-managed operating systems such as Linux/Posix and Windows.
 
