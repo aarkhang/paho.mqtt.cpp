@@ -51,6 +51,7 @@ add_library(paho-cpp-objs OBJECT
     response_options.cpp
     ssl_options.cpp
     string_collection.cpp
+	  subscribe_options.cpp
     token.cpp
     topic.cpp
     connect_options.cpp
@@ -61,10 +62,6 @@ add_library(paho-cpp-objs OBJECT
 #install(TARGETS paho-cpp-objs EXPORT PahoMqttCpp
 #    OBJECTS DESTINATION ${CMAKE_INSTALL_LIBDIR}
 #)
-
-if(PAHO_WITH_SSL)
-    add_definitions(-DOPENSSL)
-endif()
 
 # Object libraries can't use target_link_libraries in order to take advantage
 # of transitive usage requirements until CMake 3.12. This is a workaround:
@@ -83,16 +80,13 @@ target_include_directories(paho-cpp-objs
 ## --- Build the shared library, if requested ---
 
 if(PAHO_BUILD_SHARED)
-    ## set position independent flag (-fPIC on Unix)
-    # this may only be necessary for old compiler, but doesn't hurt
-    set_property(TARGET paho-cpp-objs PROPERTY POSITION_INDEPENDENT_CODE ON)
-
+    ## create the shared library
     add_library(paho-mqttpp3 SHARED $<TARGET_OBJECTS:paho-cpp-objs>)
 
     ## add dependencies to the shared library
     target_link_libraries(paho-mqttpp3
         PRIVATE ${LIBS_SYSTEM}
-        PUBLIC PahoMqttC::PahoMqttC)
+        PUBLIC PahoMqttC::PahoMqttC Threads::Threads)
 
     # It would be nice to exort the include paths from the obj lib, but we
     # get an export error. Perhaps in a future version?
@@ -130,7 +124,7 @@ if(PAHO_BUILD_STATIC)
     ## add dependencies to the shared library
     target_link_libraries(paho-mqttpp3-static
         PRIVATE ${LIBS_SYSTEM}
-        PUBLIC PahoMqttC::PahoMqttC)
+        PUBLIC PahoMqttC::PahoMqttC Threads::Threads)
 
     target_include_directories(paho-mqttpp3-static PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
